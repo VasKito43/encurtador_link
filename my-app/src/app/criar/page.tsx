@@ -1,19 +1,9 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import type { NextPage } from 'next';
 import LinkCard, { Link as LinkType } from './components/LinkCard';
 
-interface Link {
-  id: number;
-  code: string;
-  title?: string | null;
-  url: string;
-  visits?: number;
-  created_at: string;
-}
-
-const Home: NextPage = () => {
+const Home: React.FC = () => {
   const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
   const [title, setTitle] = useState<string>('');
   const [url, setUrl] = useState<string>('');

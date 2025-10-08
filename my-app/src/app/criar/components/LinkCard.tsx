@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react';
 
 export interface Link {
@@ -72,7 +74,6 @@ export default function LinkCard({ link, apiUrl, onDeleted, onUpdated }: LinkCar
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(shortUrl);
       } else {
-        // fallback
         const el = document.createElement('textarea');
         el.value = shortUrl;
         document.body.appendChild(el);
@@ -80,7 +81,10 @@ export default function LinkCard({ link, apiUrl, onDeleted, onUpdated }: LinkCar
         document.execCommand('copy');
         document.body.removeChild(el);
       }
-      window.alert('Link curto copiado para a área de transferência');
+      // tooltip substitute
+      const original = document.title;
+      document.title = 'Copiado!';
+      setTimeout(() => (document.title = original), 900);
     } catch (err) {
       console.error('Erro ao copiar:', err);
       window.alert('Não foi possível copiar o link automaticamente');
@@ -88,66 +92,69 @@ export default function LinkCard({ link, apiUrl, onDeleted, onUpdated }: LinkCar
   }
 
   return (
-    <div className="card">
+    <article className="bg-white rounded-lg shadow-sm p-4">
       {editing ? (
-        <>
-          <div style={{ marginBottom: 8 }}>
-            <input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Legenda do link"
-            />
-          </div>
-          <div style={{ marginBottom: 8 }}>
-            <input
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://exemplo.com/..."
-            />
-          </div>
-          <div className="controls">
-            <button className="btn small" onClick={handleSave} disabled={saving}>
+        <div className="space-y-3">
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Legenda do link"
+            className="w-full border border-slate-200 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          />
+          <input
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="https://exemplo.com/..."
+            className="w-full border border-slate-200 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          />
+          <div className="flex gap-2">
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            >
               {saving ? 'Salvando...' : 'Salvar'}
             </button>
-            <button className="small" onClick={() => setEditing(false)}>
+            <button
+              onClick={() => setEditing(false)}
+              className="px-3 py-2 bg-slate-100 rounded-md hover:bg-slate-200 transition"
+            >
               Cancelar
             </button>
           </div>
-        </>
+        </div>
       ) : (
-        <>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontWeight: 700 }}>{link.title ?? 'Sem título'}</div>
-              <a className="link-url" href={shortUrl} target="_blank" rel="noreferrer">
+        <div>
+          <div className="flex justify-between items-start gap-4">
+            <div className="min-w-0">
+              <h3 className="font-semibold text-slate-800 truncate">{link.title ?? 'Sem título'}</h3>
+              <a
+                className="text-blue-600 font-medium text-sm break-words"
+                href={shortUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {shortUrl}
               </a>
-              <div className="muted" style={{ marginTop: 6, fontSize: 13 }}>
-                {link.url}
-              </div>
+              <div className="text-xs text-slate-500 mt-1 break-words">{link.url}</div>
             </div>
-            <div style={{ textAlign: 'right' }}>
-              <div className="muted">visitas</div>
-              <div style={{ fontWeight: 700 }}>{link.visits ?? 0}</div>
+
+            <div className="text-right">
+              <div className="text-xs text-slate-500">visitas</div>
+              <div className="font-semibold">{link.visits ?? 0}</div>
             </div>
           </div>
 
-          <div style={{ marginTop: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div className="muted">Criado em {new Date(link.created_at).toLocaleString()}</div>
-            <div className="controls">
-              <button className="small" onClick={handleCopy}>
-                Copiar
-              </button>
-              <button className="small" onClick={() => setEditing(true)}>
-                Editar
-              </button>
-              <button className="small" onClick={handleDelete}>
-                Excluir
-              </button>
+          <div className="mt-3 flex items-center justify-between">
+            <div className="text-xs text-slate-500">Criado em {new Date(link.created_at).toLocaleString()}</div>
+            <div className="flex items-center gap-2">
+              <button onClick={handleCopy} className="px-2 py-1 text-sm bg-slate-100 rounded-md hover:bg-slate-200">Copiar</button>
+              <button onClick={() => setEditing(true)} className="px-2 py-1 text-sm bg-slate-100 rounded-md hover:bg-slate-200">Editar</button>
+              <button onClick={handleDelete} className="px-2 py-1 text-sm bg-red-50 text-red-600 rounded-md hover:bg-red-100">Excluir</button>
             </div>
           </div>
-        </>
+        </div>
       )}
-    </div>
+    </article>
   );
 }
