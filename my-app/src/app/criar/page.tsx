@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import LinkCard, { Link as LinkType } from './components/LinkCard';
 
 const Home: React.FC = () => {
-  const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+  const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || 'https://crud-mail.onrender.com/';
   const [title, setTitle] = useState<string>('');
   const [url, setUrl] = useState<string>('');
   const [links, setLinks] = useState<LinkType[]>([]);
