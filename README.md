@@ -14,6 +14,17 @@ Este repositório contém dois projetos relacionados a um sistema simples de enc
 
 ---
 
+## Aplicação em produção (links)
+
+A seguir estão as instâncias hospedadas da aplicação:
+
+- **Backend (API)**: [https://crud-mail.onrender.com/](https://crud-mail.onrender.com/)
+- **Frontend (Next.js)**: [https://encurtador-link-phi.vercel.app/](https://encurtador-link-phi.vercel.app/)
+
+> Use esses links para acessar a API e a interface já em produção/hospedadas.
+
+---
+
 ## Estrutura do repositório
 
 ```
@@ -175,18 +186,11 @@ NEXT_PUBLIC_SHORT_BASE=http://localhost:3000
 
 ---
 
-## Sugestões de melhorias
 
-- Normalizar a construção da URL curta no frontend para usar sempre um único caminho (ex.: `/r/{code}`) e ajustar o backend para lidar com esse prefixo (ou usar proxy reverso) — atualmente existem pequenas inconsistências entre componentes.
-- Adicionar paginação/filtragem no endpoint `GET /links` para grandes bases.
-- Criar migrations formais e documentação de setup do banco com `drizzle-kit` (há pasta `drizzle/` no backend).
+## Desenvolvedores
+
+- Erick Alair
+- Gabriel Vasco
 
 ---
-
-Se quiser, posso:
-
-- Gerar um `README.md` mais curto ou em inglês; 
-- Gerar exemplos de `docker-compose` (Postgres + backend + frontend);
-- Ajustar o frontend para usar `/links` ou `/r/{code}` de forma consistente.
-
 
